@@ -6,11 +6,11 @@ This project is a mini command-line interface (CLI) parser written in C++. It is
 
 ## 🎯 Goal
 
-The goal is to get a deep understanding of how CLI parsing works by attempting to implement a simplified version myself.
+The goal is to get a deep understanding of how CLI parsing works by implementing my own version.
 
 ## 💡 Motivation
 
-I wanted to learn how to read others code, so I chose the CLI11 library as my first project to study. To reinforce what I learned, I'm going to rebuild a smaller version from scratch.
+I wanted to learn how to read code and internalize it, so I chose the CLI11 library as my first project to study. To reinforce what I learned, I'm going to rebuild a my own version from scratch.
 
 Main focuses of this project:
 - Converting theory into implementation
