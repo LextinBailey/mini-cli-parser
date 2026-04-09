@@ -9,6 +9,8 @@ public:
     bool expects_value;
     std::string description;
 
+    bool required = false;
+
     std::string value;
     bool is_set = false;
 };

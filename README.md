@@ -26,7 +26,6 @@ Main focuses of this project:
 ## 🧱 Features (Planned)
 
 - [ ] Examples
-- [ ] Required options
 - [ ] Combined short flags
 
 ## 📌 Features (Implemented)
@@ -38,6 +37,7 @@ Main focuses of this project:
 - [x] Help menu
 - [x] Error handling
 - [x] Short flags
+- [x] Required options
 
 ## 📁 Project Structure
 

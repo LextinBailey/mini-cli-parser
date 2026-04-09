@@ -4,7 +4,7 @@
 int main(int argc, char** argv) {
     App app;
 
-    app.add_option("--name", "-n", true, "User name");
+    app.add_option("--name", "-n", true, "User name", true);
     app.add_option("--verbose", "-v", false, "Verbose mode");
     app.add_option("--help", "-h", false, "Show this help menu");
 
@@ -19,6 +19,7 @@ int main(int argc, char** argv) {
 
     try {
         app.parse(argc, argv);
+        app.validate_required();
     } catch (const std::exception& e) {
         std::cout << "Error: " << e.what() << '\n';
         return 1;

@@ -11,15 +11,38 @@ private:
     std::unordered_map<std::string, Option> options;
 
 public:
-    void add_option(const std::string& name, const std::string& short_name ,bool expects_value, const std::string& description) {
+    void add_option(const std::string& name, const std::string& short_name ,bool expects_value, const std::string& description, bool required = false) {
         Option opt;
 
         opt.name = name;
         opt.short_name = short_name;
         opt.expects_value = expects_value;
         opt.description = description;
+        opt.required = required;
 
         options.emplace(name, opt);
+    }
+
+    void print_help() const {
+        std::cout << "Options:\n";
+
+        for (const auto& pair : options) {
+            const Option& opt = pair.second;
+
+            std::cout << "  " << opt.name << ", " << opt.short_name;
+
+            if (opt.name.length() < 14) {
+                std::cout << std::string(14 - opt.name.length(), ' ');
+            }
+                     
+            std::cout << opt.description;
+
+            if (opt.required) {
+                std::cout << " (required)";
+            }
+
+            std::cout << '\n';
+        }
     }
 
     void parse(int argc, char** argv) {
@@ -61,23 +84,17 @@ public:
         }
     }
 
-    Option& get_option(const std::string& name) {
-        return options.at(name);
-    }
-
-    void print_help() const {
-        std::cout << "Options:\n";
-
+    void validate_required() const {
         for (const auto& pair : options) {
             const Option& opt = pair.second;
 
-            std::cout << "  " << opt.name << ", " << opt.short_name;
-
-            if (opt.name.length() < 14) {
-                std::cout << std::string(14 - opt.name.length(), ' ');
+            if (opt.required && !opt.is_set) {
+                throw std::runtime_error("Missing required option: " + opt.name);
             }
-                     
-            std::cout << opt.description << '\n';
         }
+    }
+
+    Option& get_option(const std::string& name) {
+        return options.at(name);
     }
 };
