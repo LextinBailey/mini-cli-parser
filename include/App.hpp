@@ -27,6 +27,17 @@ public:
             if(it != options.end()) {
                 Option& opt = it->second;
                 opt.is_set = true;
+
+                if(opt.expects_value) {
+                    if(i + 1 >= argc) continue; 
+
+                    std::string next = argv[i + 1];
+
+                    if(next[0] == '-') continue; 
+
+                    opt.value = next;
+                    i++;
+                }
             }
         }
     }

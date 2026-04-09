@@ -16,7 +16,7 @@
 - Option.hpp defines Option class
 - App.hpp defines App class with add_option(), parse(), get_option()
 
-## Day 4 (Apr 9, 2026):
+## Day 4 (Apr 9, 2026): Basic Parsing
 
 - Implemented basic CLI parsing for flags
     - Added parse() logic to detect registered options
@@ -24,3 +24,8 @@
     - Simple test in main:
         - ./build/app --verbose
         - Verbose is ON
+- Implemented value parsing for CLI options
+    - Options that expect values now take the next argument
+    - Handles basic validation:
+        - Out of bounds check (no next argument)
+        - Next argument not a value
