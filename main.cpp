@@ -6,6 +6,7 @@ int main(int argc, char** argv) {
 
     app.add_option("--name", true, "User name");
     app.add_option("--verbose", false, "Verbose mode");
+    app.add_option("--help", false, "Show this help menu");
 
     try {
         app.parse(argc, argv);
@@ -20,5 +21,10 @@ int main(int argc, char** argv) {
 
     if (app.get_option("--verbose").is_set) {
         std::cout << "Verbose ON\n";
+    }
+
+    if (app.get_option("--help").is_set) {
+        app.print_help();
+        return 0;
     }
 }

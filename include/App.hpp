@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include <stdexcept>
 #include <string>
 #include <unordered_map>
@@ -52,5 +53,21 @@ public:
 
     Option& get_option(const std::string& name) {
         return options.at(name);
+    }
+
+    void print_help() const {
+        std::cout << "Options:\n";
+
+        for (const auto& pair : options) {
+            const Option& opt = pair.second;
+
+            std::cout << "  " << opt.name;
+
+            if (opt.name.length() < 14) {
+                std::cout << std::string(14 - opt.name.length(), ' ');
+            }
+                     
+            std::cout << opt.description << '\n';
+        }
     }
 };

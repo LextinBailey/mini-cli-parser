@@ -16,7 +16,7 @@
 - Option.hpp defines Option class
 - App.hpp defines App class with add_option(), parse(), get_option()
 
-## Day 4 (Apr 9, 2026): Basic Parsing & Validation
+## Day 4 (Apr 9, 2026): Basic Parsing, Validation, and Help Menu
 
 - Implemented basic CLI parsing for flags
     - Added parse() logic to detect registered options
@@ -35,3 +35,5 @@
         - Missing values
         - Invalid values
     - Wrapped parsing in try/catch inside main
+- Added --help option and help menu
+    - --help displays option names and descriptions
