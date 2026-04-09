@@ -8,6 +8,15 @@ int main(int argc, char** argv) {
     app.add_option("--verbose", false, "Verbose mode");
     app.add_option("--help", false, "Show this help menu");
 
+    for (int i = 1; i < argc; i++) {
+        std::string arg = argv[i];
+
+        if(arg == "--help") {
+            app.print_help();
+            return 0;
+        }
+    }
+
     try {
         app.parse(argc, argv);
     } catch (const std::exception& e) {
@@ -21,10 +30,5 @@ int main(int argc, char** argv) {
 
     if (app.get_option("--verbose").is_set) {
         std::cout << "Verbose ON\n";
-    }
-
-    if (app.get_option("--help").is_set) {
-        app.print_help();
-        return 0;
     }
 }

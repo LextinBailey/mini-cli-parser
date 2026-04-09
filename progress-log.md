@@ -37,3 +37,9 @@
     - Wrapped parsing in try/catch inside main
 - Added --help option and help menu
     - --help displays option names and descriptions
+    - Current spacing is fixed. Dynamic spacing planned in the future
+- Made help menu a top-level concern
+    - Checked for --help first in main
+    - If found: print help menu: exit
+    - Else: parse normally
+    - This ensures help is never blocked by errors and will always give guidance to the user
