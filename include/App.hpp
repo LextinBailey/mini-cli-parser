@@ -1,5 +1,6 @@
 #pragma once
 
+#include <stdexcept>
 #include <string>
 #include <unordered_map>
 #include "Option.hpp"
@@ -24,20 +25,27 @@ public:
             std::string arg = argv[i];
 
             auto it = options.find(arg);
-            if(it != options.end()) {
-                Option& opt = it->second;
-                opt.is_set = true;
 
-                if(opt.expects_value) {
-                    if(i + 1 >= argc) continue; 
+            if (it == options.end()) {
+                throw std::runtime_error("Unknown option: " + arg);
+            }
+ 
+            Option& opt = it->second;
+            opt.is_set = true;
 
-                    std::string next = argv[i + 1];
+            if(opt.expects_value) {
+                if(i + 1 >= argc) {
+                    throw std::runtime_error("Missing value for option: " + arg);
+                } 
 
-                    if(next[0] == '-') continue; 
+                std::string next = argv[i + 1];
 
-                    opt.value = next;
-                    i++;
+                if(next[0] == '-') {
+                    throw std::runtime_error("Invalid value for option: " + arg);
                 }
+
+                opt.value = next;
+                i++;
             }
         }
     }
