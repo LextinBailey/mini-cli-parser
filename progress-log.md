@@ -15,3 +15,12 @@
 - Designed Option and App class interfaces
 - Option.hpp defines Option class
 - App.hpp defines App class with add_option(), parse(), get_option()
+
+## Day 4 (Apr 9, 2026):
+
+- Implemented basic CLI parsing for flags
+    - Added parse() logic to detect registered options
+    - Flags like --verbose are now recognized and marked as set
+    - Simple test in main:
+        - ./build/app --verbose
+        - Verbose is ON

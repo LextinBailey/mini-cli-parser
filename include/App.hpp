@@ -19,7 +19,17 @@ public:
         options.emplace(name, opt);
     }
 
-    void parse(int argc, char** argv) {}
+    void parse(int argc, char** argv) {
+        for (int i = 1; i < argc; i++) {
+            std::string arg = argv[i];
+
+            auto it = options.find(arg);
+            if(it != options.end()) {
+                Option& opt = it->second;
+                opt.is_set = true;
+            }
+        }
+    }
 
     Option& get_option(const std::string& name) {
         return options.at(name);
