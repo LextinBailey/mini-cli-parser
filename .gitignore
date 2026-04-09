@@ -39,3 +39,9 @@
 
 # debug information files
 *.dwo
+
+# Project directories
+build/
+
+# VS Code (keep configs if you want to share them)
+.vscode/*

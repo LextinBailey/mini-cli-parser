@@ -13,4 +13,5 @@
 ## Day 3 (Apr 8, 2026): Designing Interfaces
 
 - Designed Option and App class interfaces
-- Added Option class interface
+- Option.hpp defines Option class
+- App.hpp defines App class with add_option(), parse(), get_option()
