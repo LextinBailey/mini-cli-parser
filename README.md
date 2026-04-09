@@ -25,8 +25,9 @@ Main focuses of this project:
 
 ## 🧱 Features (Planned)
 
-- [ ] Short flags
 - [ ] Examples
+- [ ] Required options
+- [ ] Combined short flags
 
 ## 📌 Features (Implemented)
 
@@ -36,6 +37,7 @@ Main focuses of this project:
 - [x] Print parsed results
 - [x] Help menu
 - [x] Error handling
+- [x] Short flags
 
 ## 📁 Project Structure
 

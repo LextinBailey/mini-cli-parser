@@ -5,6 +5,7 @@
 class Option {
 public:
     std::string name;
+    std::string short_name;
     bool expects_value;
     std::string description;
 

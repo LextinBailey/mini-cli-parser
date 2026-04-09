@@ -4,9 +4,9 @@
 int main(int argc, char** argv) {
     App app;
 
-    app.add_option("--name", true, "User name");
-    app.add_option("--verbose", false, "Verbose mode");
-    app.add_option("--help", false, "Show this help menu");
+    app.add_option("--name", "-n", true, "User name");
+    app.add_option("--verbose", "-v", false, "Verbose mode");
+    app.add_option("--help", "-h", false, "Show this help menu");
 
     for (int i = 1; i < argc; i++) {
         std::string arg = argv[i];

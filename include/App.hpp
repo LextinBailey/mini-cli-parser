@@ -11,10 +11,11 @@ private:
     std::unordered_map<std::string, Option> options;
 
 public:
-    void add_option(const std::string& name, bool expects_value, const std::string& description) {
+    void add_option(const std::string& name, const std::string& short_name ,bool expects_value, const std::string& description) {
         Option opt;
 
         opt.name = name;
+        opt.short_name = short_name;
         opt.expects_value = expects_value;
         opt.description = description;
 
@@ -28,7 +29,16 @@ public:
             auto it = options.find(arg);
 
             if (it == options.end()) {
-                throw std::runtime_error("Unknown option: " + arg);
+                for (auto& pair : options) {
+                    if (pair.second.short_name == arg) {
+                        it = options.find(pair.first);
+                        break;
+                    }
+                }
+
+                if (it == options.end()) {
+                    throw std::runtime_error("Unknown option: " + arg);
+                }
             }
  
             Option& opt = it->second;
@@ -61,7 +71,7 @@ public:
         for (const auto& pair : options) {
             const Option& opt = pair.second;
 
-            std::cout << "  " << opt.name;
+            std::cout << "  " << opt.name << ", " << opt.short_name;
 
             if (opt.name.length() < 14) {
                 std::cout << std::string(14 - opt.name.length(), ' ');

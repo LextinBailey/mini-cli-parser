@@ -44,3 +44,9 @@
     - Else: parse normally
     - This ensures help is never blocked by errors and will always give guidance to the user
 - Updated `README.md` with implemented features and planned features
+- Added support for short flags
+    - Option skeleton now includes short_name
+    - add_option() now accepts short flags
+    - parse() handles short flags
+    - Help menu prints both forms
+    - Example: "--name" or "-n"
