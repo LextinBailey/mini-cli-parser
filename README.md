@@ -25,10 +25,17 @@ Main focuses of this project:
 
 ## 🧱 Features (Planned)
 
-- [ ] Register CLI options
-- [ ] Parse argv input
-- [ ] Store and retrieve values
-- [ ] Print parsed results
+- [ ] Short flags
+- [ ] Examples
+
+## 📌 Features (Implemented)
+
+- [x] Register CLI options
+- [x] Parse argv input
+- [x] Store and retrieve values
+- [x] Print parsed results
+- [x] Help menu
+- [x] Error handling
 
 ## 📁 Project Structure
 

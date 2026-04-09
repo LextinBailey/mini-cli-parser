@@ -43,3 +43,4 @@
     - If found: print help menu: exit
     - Else: parse normally
     - This ensures help is never blocked by errors and will always give guidance to the user
+- Updated `README.md` with implemented features and planned features
