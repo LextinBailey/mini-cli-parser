@@ -53,3 +53,7 @@
 - Added support for required CLI options
     - validate_required() after parsing
     - Help menu indicates required options
+
+## Day 5 (Apr 10, 2026): README Update
+
+- Updated `README.md` to demonstrate and explain: purpose, example usage, and internal workings
