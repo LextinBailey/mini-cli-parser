@@ -25,6 +25,7 @@ This project demonstrates:
 - [x] Register CLI options
 - [x] Parse raw `argv` input
 - [x] Support for short flags (e.g., `-n`)
+- [x] Support for combined short flags (e.g., `-vn`)
 - [x] Required option enforcement
 - [x] Store and retrieve parsed values
 - [x] Built-in help menu
@@ -32,7 +33,6 @@ This project demonstrates:
 
 ### 🧱 Planned
 
-- [ ] Combined short flags (e.g., `-abc`)
 - [ ] Usage examples
 - [ ] Additional validation and type handling
 
@@ -47,11 +47,17 @@ int main(int argc, char** argv) {
 
     app.add_option("--name", "-n", true, "User name", true);
     app.add_option("--verbose", "-v", false, "Verbose mode");
+    app.add_option("--help", "-h", false, "Show this help menu");
 
     try {
         app.parse(argc, argv);
         app.validate_required();
     } catch (const std::exception& e) {
+        if (app.get_option("--help").is_set) {
+            app.print_help();
+            return 0;
+        }
+
         std::cout << "Error: " << e.what() << '\n';
         return 1;
     }
@@ -62,6 +68,11 @@ int main(int argc, char** argv) {
 
     if (app.get_option("--verbose").is_set) {
         std::cout << "Verbose ON\n";
+    }
+
+    if (app.get_option("--help").is_set) {
+        app.print_help();
+        return 0;
     }
 }
 ```
@@ -128,13 +139,18 @@ The `parse(argc, argv)` function processes command-line input sequentially:
 
 1. Iterate through `argv` starting at index 1 (Ignoring `./build/app`)
 2. For each argument:
+    - Check if argument is a combination of short flags (e.g., `-vn`)
+    - If so, handle each flag separately
+    - Call `resolve_option(arg)` helper function
     - Try to match it against a registered long option
     - If not found, check against all short options
 3. If no match is found:
     - Throw an error for unknown option
 4. If matched:
+    - Return the option
     - Mark the option as `is_set = true`
     - If the option expects a value:
+        - Call `handle_value(opt, i argc, argv, arg)` helper function
         - Read the next argument
         - Validate it's not another flag
         - Store it in `option.value`
@@ -148,7 +164,13 @@ Short flags (e.g., `-n`) are resolved by iterating through all registered option
 
 Once found, the corresponding long option is used as the canonical reference.
 
-### 4. Required Option Validation
+### 4. Combined Flag Resolution
+
+Combined flags (e.g., `-vn`) are resolved by iterating through each flag
+
+If a flag expects a value, validation in place ensuring the flag is the last flag in the group
+
+### 5. Required Option Validation
 
 After parsing, `validate_required()` ensures all required options were provided.
 
@@ -157,7 +179,7 @@ After parsing, `validate_required()` ensures all required options were provided.
 
 This separates parsing logic from validation.
 
-### 5. Data Access
+### 6. Data Access
 
 Parsed data is accessed through:
 
@@ -169,17 +191,18 @@ Each `Option` object exposes:
 - `is_set`: whether the flag was provided
 - `value`: the associated argument (if required)
 
-### 6. Error Handling
+### 7. Error Handling
 
 Errors are handled using exceptions (`std::runtime_error`) for cases:
 - Unknown options
 - Missing values
 - Invalid values
 - Missing required arguments
+- Option requiring value not the last flag in the group
 
 This allows the calling code to manage failures cleanly.
 
-### 7. Help Menu
+### 8. Help Menu
 
 The help menu is generated dynamically from registered options.
 
@@ -187,7 +210,7 @@ The help menu is generated dynamically from registered options.
 - Prints name (long and short), descriptions, and required flags
 - Uses simple spacing for readability
 
-Iterates through command-line inpute before parsing to check for `"--help"` or `"-h"` to ensure no errors block the help menu.
+Will print after an exception is caught if `--help` has been set
 
 ## 🧩 Design Summary
 
@@ -198,7 +221,7 @@ Iterates through command-line inpute before parsing to check for `"--help"` or `
     - Processes input in one pass with predictable behavior
 
 - Extensible Structure
-    - Planned features (e.g., combined flags, subcommands) can be added without major refactoring
+    - Planned features can be added without major refactoring
 
 ## 📈 Development Notes
 

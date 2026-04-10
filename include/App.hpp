@@ -45,42 +45,67 @@ public:
         }
     }
 
+    Option& resolve_option(const std::string& arg) {
+        auto it = options.find(arg);
+
+        if (it != options.end()) {
+            return it->second;
+        }
+
+        for (auto& pair : options) {
+            if (pair.second.short_name == arg) {
+                return pair.second;
+            }
+        }
+
+        throw std::runtime_error("Unknown option: " + arg);
+    }
+
+    void handle_value(Option& opt, int& i, int argc, char** argv, const std::string& arg) {
+        if (!opt.expects_value) return;
+
+        if (i + 1 >= argc) {
+            throw std::runtime_error("Missing value for option: " + arg);
+        }
+
+        std::string next = argv[i + 1];
+
+        if(next[0] == '-') {
+            throw std::runtime_error("Invalid value for option: " + arg);
+        }
+
+        opt.value = next;
+        i++;
+    }
+
     void parse(int argc, char** argv) {
+
         for (int i = 1; i < argc; i++) {
             std::string arg = argv[i];
 
-            auto it = options.find(arg);
+            if (arg.length() > 2 && arg[0] == '-' && arg[1] != '-') {
+                for(size_t j = 1; j < arg.length(); j++) {
+                    std::string short_flag = "-" + std::string(1, arg[j]);
 
-            if (it == options.end()) {
-                for (auto& pair : options) {
-                    if (pair.second.short_name == arg) {
-                        it = options.find(pair.first);
-                        break;
+                    Option& opt = resolve_option(short_flag);
+                    opt.is_set = true;
+
+                    if(opt.expects_value) {
+                        if (j != arg.length() - 1) {
+                            throw std::runtime_error("Option requiring value must be last in group: " + short_flag);
+                        }
+
+                        handle_value(opt, i, argc, argv, short_flag);
                     }
                 }
 
-                if (it == options.end()) {
-                    throw std::runtime_error("Unknown option: " + arg);
-                }
+                continue;
             }
  
-            Option& opt = it->second;
+            Option& opt = resolve_option(arg);
             opt.is_set = true;
 
-            if(opt.expects_value) {
-                if(i + 1 >= argc) {
-                    throw std::runtime_error("Missing value for option: " + arg);
-                } 
-
-                std::string next = argv[i + 1];
-
-                if(next[0] == '-') {
-                    throw std::runtime_error("Invalid value for option: " + arg);
-                }
-
-                opt.value = next;
-                i++;
-            }
+            handle_value(opt, i, argc, argv, arg);
         }
     }
 

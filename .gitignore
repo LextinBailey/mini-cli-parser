@@ -43,5 +43,5 @@
 # Project directories
 build/
 
-# VS Code (keep configs if you want to share them)
+# VS Code 
 .vscode/*
