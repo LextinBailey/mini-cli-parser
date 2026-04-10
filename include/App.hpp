@@ -9,6 +9,7 @@
 class App {
 private:
     std::unordered_map<std::string, Option> options;
+    std::unordered_map<std::string, Option*> short_options;
 
 public:
     void add_option(const std::string& name, const std::string& short_name ,bool expects_value, const std::string& description, bool required = false) {
@@ -20,7 +21,11 @@ public:
         opt.description = description;
         opt.required = required;
 
-        options.emplace(name, opt);
+        auto [it, inserted] = options.emplace(name, opt);
+
+        if (!short_name.empty()) {
+            short_options[short_name] = &it->second;
+        }
     }
 
     void print_help() const {
@@ -52,10 +57,9 @@ public:
             return it->second;
         }
 
-        for (auto& pair : options) {
-            if (pair.second.short_name == arg) {
-                return pair.second;
-            }
+        auto sit = short_options.find(arg);
+        if (sit != short_options.end()) {
+            return *sit->second;
         }
 
         throw std::runtime_error("Unknown option: " + arg);

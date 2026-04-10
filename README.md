@@ -88,11 +88,15 @@ int main(int argc, char** argv) {
 
 ## ⚙️ Build and Usage
 
+### Requirements
+
+C++17 or later
+
 ### Build
 
 ```bash
 $ mkdir -p build
-$ g++ -Iinclude main.cpp -o build/app
+$ g++ -std=c++17 -Iinclude main.cpp -o build/app
 ```
 
 ### Usage
@@ -150,7 +154,7 @@ The `parse(argc, argv)` function processes command-line input sequentially:
     - Return the option
     - Mark the option as `is_set = true`
     - If the option expects a value:
-        - Call `handle_value(opt, i argc, argv, arg)` helper function
+        - Call `handle_value(opt, i, argc, argv, arg)` helper function
         - Read the next argument
         - Validate it's not another flag
         - Store it in `option.value`
@@ -160,15 +164,17 @@ This ensures a predictable left-to-right parsing process.
 
 ### 3. Short Flag Resolution
 
-Short flags (e.g., `-n`) are resolved by iterating through all registered options and matching against `short_name`.
+Short flags (e.g., `-n`) are resolved using a secondary `std::unordered_map` that maps short names directly to their corresponding `Option` objects.
 
-Once found, the corresponding long option is used as the canonical reference.
+The resolved option is treated as the canonical reference for storing and accessing parsed data.
+
+Ealier implementations used a linear search across registered options. This was optimized using a hash map to improve lookup performance.
 
 ### 4. Combined Flag Resolution
 
-Combined flags (e.g., `-vn`) are resolved by iterating through each flag
+Combined flags (e.g., `-vn`) are resolved by iterating through each flag.
 
-If a flag expects a value, validation in place ensuring the flag is the last flag in the group
+If a flag expects a value, validation in place ensuring the flag is the last flag in the group.
 
 ### 5. Required Option Validation
 
@@ -217,8 +223,8 @@ Will print after an exception is caught if `--help` has been set
 - Single Responsibility
     - `Option` represents data, `App` handles parsing logic
 
-- Linear Parsing Strategy
-    - Processes input in one pass with predictable behavior
+- Efficient Single-Pass Parsing
+    - Parses input in one pass with predictable behavior and optimized flag resolution using constant-time lookups
 
 - Extensible Structure
     - Planned features can be added without major refactoring

@@ -56,7 +56,7 @@ Verbose ON
     - `validate_required()` after parsing
     - Help menu indicates required options
 
-## Day 5 (Apr 10, 2026): README Update, Combined Short Flags, Separation of Concerns, Help Menu Adjustment
+## Day 5 (Apr 10, 2026): README Update, Combined Short Flags, Separation of Concerns, Help Menu Adjustment, Short Flag Lookup
 
 - Updated `README.md` to demonstrate and explain: purpose, example usage, and internal workings
 - Added support for combined short flags (e.g., `-vn John`)
@@ -69,3 +69,9 @@ Verbose ON
 - Moved `print_help()` call:
     - After parsing
     - When an exception is caught and `--help` has been set
+- Improved short flag lookup from 0(n) to 0(1)
+    - Before was looping through each `Option`
+    - This became slow when I added support for combined short flags
+    - To fix this, I implemented a second hash map that maps short names directly to their corresponding `Option` objects
+    - I used structured binding, which is a C++17 feature
+        - There is a workaround for C++11 compability, but for the purpose of this project, I chose the cleaner, modern approach
