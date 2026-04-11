@@ -30,17 +30,17 @@ This project demonstrates:
 - [x] Store and retrieve parsed values
 - [x] Built-in help menu
 - [x] Error handling for invalid input
+- [x] Usage examples
 
 ### 🧱 Planned
 
-- [ ] Usage examples
 - [ ] Additional validation and type handling
 
 ## 🛠️ Example Usage
 
 ```cpp
 #include <iostream>
-#include "App.hpp"
+#include "mini_cli/App.hpp"
 
 int main(int argc, char** argv) {
     App app;
@@ -104,21 +104,35 @@ $ cmake --build .
 ### Usage
 
 ```bash
-$ ./app --name Dave -v
+$ ./example_app --name Dave -v
 Name: Dave
 Verbose ON
+```
+
+## 🧩 Library Usage
+
+This project is structured as a reusable header-only library.
+
+Include it in your project:
+
+```cpp
+#include "mini_cli/App.hpp"
 ```
 
 ## 📁 Project Structure
 
 ```
 mini-cli-parser/
-|-- include/
-|   |-- App.hpp
-|   |__ Option.hpp
-|-- main.cpp
-|-- README.md
-|-- progress-log.md
+├── CMakeLists.txt
+├── include
+│   └── mini_cli
+│       ├── App.hpp
+│       └── Option.hpp
+├── examples
+│   └── main.cpp
+├── src
+├── progress-log.md
+└── README.md
 ```
 
 ## ⚙️ How It Works Internally

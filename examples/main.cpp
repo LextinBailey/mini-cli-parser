@@ -1,5 +1,5 @@
 #include <iostream>
-#include "App.hpp"
+#include "mini_cli/App.hpp"
 
 int main(int argc, char** argv) {
     App app;

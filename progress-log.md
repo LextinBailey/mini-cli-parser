@@ -76,6 +76,14 @@ Verbose ON
     - I used structured binding, which is a C++17 feature
         - There is a workaround for C++11 compability, but for the purpose of this project, I chose the cleaner, modern approach
 
-## Day 6 (Apr 11, 2026): CMake
+## Day 6 (Apr 11, 2026): CMake, Library Structure
 
 - Implemented CMake and updated `README.md` build and usage instructions
+- Restructured design as a header-only library
+    - `mini_cli`: reusable library
+    - `example_app`: demo program
+    - `target_link_libraries`: connects them
+    - Now can be included in others projects:
+```cpp
+#include "mini_cli/App.hpp"
+```
