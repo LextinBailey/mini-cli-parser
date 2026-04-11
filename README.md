@@ -1,42 +1,16 @@
 # Mini CLI Parser
 
-A lightweight command-line argument parser written in C++. Focused on clarity, simplicity, and extensibility.
+A header-only C++ CLI parsing library focused on clarity and design.
+
+A lightweight C++ library for building command-line interfaces with support for short/long flags, combined options, required arguments, and help generation.
 
 ## 📝 Overview
 
-Mini CLI Parser is a custom-built command-line parsing library inspired by modern tools like CLI11. It provides a structured way to define, parse, and access command-line arguments in C++ applications.
+Mini CLI Parser is a custom-built command-line parsing library inspired by modern tools like CLI11. It provides a structured way to define, parse, and access command-line arguments in C++.
 
 This project was built to explore how CLI parsers work internally while keeping a clean and usable interface.
 
-It is designed as both a practical utility and a demonstration of clean C++ design principles.
-
-## 🎯 Purpose
-
-This project demonstrates:
-- Strong understanding of C++ fundamentals
-- Clean separation of concerns between parsing logic and data representation
-- Ability to design and structure a reusable component
-- Translating real-world library design into a custom implementation
-
-## 🔥 Features
-
-### ✅ Implemented
-
-- [x] Register CLI options
-- [x] Parse raw `argv` input
-- [x] Support for short flags (e.g., `-n`)
-- [x] Support for combined short flags (e.g., `-vn`)
-- [x] Required option enforcement
-- [x] Store and retrieve parsed values
-- [x] Built-in help menu
-- [x] Error handling for invalid input
-- [x] Usage examples
-
-### 🧱 Planned
-
-- [ ] Additional validation and type handling
-
-## 🛠️ Example Usage
+## ⚡️ Quick Example
 
 ```cpp
 #include <iostream>
@@ -77,14 +51,36 @@ int main(int argc, char** argv) {
 }
 ```
 
-## 🧠 Design Highlights
+```bash
+$ ./example_app --name Dave -v
+Verbose ON
+Name: Dave
+```
 
-- Separation of Concerns
-    - `App` manages overall parsing, while `Option` encapsulates individual argument behavior.
-- Structured Parsing Flow
-    - Converts raw `argv` input into a structured, queryable format.
-- Extensible Architecture 
-    - Designed to support future features like subcommands and advanced validation.
+## 🔥 Features
+
+### 🛠️ Core Features
+
+- [x] Register CLI options
+- [x] Parse raw `argv` input
+- [x] Support for short flags (e.g., `-n`)
+- [x] Support for combined short flags (e.g., `-vn`)
+- [x] Required option enforcement
+- [x] Store and retrieve parsed values
+
+### 👨‍💻 Developer Experience
+
+- [x] Built-in help menu
+- [x] Error handling for invalid input
+- [x] Usage examples
+
+## 💡 What This Demonstrates
+
+This project demonstrates:
+- Strong understanding of C++ fundamentals
+- Clean separation of concerns between parsing logic and data representation
+- Ability to design and structure a reusable component
+- Translating real-world library design into a custom implementation
 
 ## ⚙️ Build and Usage
 
@@ -109,33 +105,25 @@ Name: Dave
 Verbose ON
 ```
 
-## 🧩 Library Usage
+## 📦 Using as a Library
 
-This project is structured as a reusable header-only library.
-
-Include it in your project:
+Mini CLI Parser is header-only. Simply include:
 
 ```cpp
 #include "mini_cli/App.hpp"
 ```
 
-## 📁 Project Structure
+No linking required.
 
-```
-mini-cli-parser/
-├── CMakeLists.txt
-├── include
-│   └── mini_cli
-│       ├── App.hpp
-│       └── Option.hpp
-├── examples
-│   └── main.cpp
-├── src
-├── progress-log.md
-└── README.md
-```
+## 🧠 Design Highlights
+
+- Clear separation between parsing logic (`App`) and data representation (`Option`)
+- Converts raw `argv` input into a structured, queryable format through a clear parsing flow.
+- Designed to support future features like subcommands and advanced validation.
 
 ## ⚙️ How It Works Internally
+
+⚠️ This section is optional and provides a deeper look into the internal design.
 
 The parser is built around two core components: `App` and `Option`.
 
@@ -157,7 +145,7 @@ Internally, options are stored in an `std::unordered_map<std::string, Option>`, 
 
 The `parse(argc, argv)` function processes command-line input sequentially:
 
-1. Iterate through `argv` starting at index 1 (Ignoring `./build/app`)
+1. Iterate through `argv` starting at index 1
 2. For each argument:
     - Check if argument is a combination of short flags (e.g., `-vn`)
     - If so, handle each flag separately
@@ -184,13 +172,13 @@ Short flags (e.g., `-n`) are resolved using a secondary `std::unordered_map` tha
 
 The resolved option is treated as the canonical reference for storing and accessing parsed data.
 
-Ealier implementations used a linear search across registered options. This was optimized using a hash map to improve lookup performance.
+Earlier implementations used a linear search across registered options. This was optimized using a hash map to improve lookup performance.
 
 ### 4. Combined Flag Resolution
 
 Combined flags (e.g., `-vn`) are resolved by iterating through each flag.
 
-If a flag expects a value, validation in place ensuring the flag is the last flag in the group.
+If a flag expects a value, validation ensures the flag is the last flag in the group.
 
 ### 5. Required Option Validation
 
@@ -234,6 +222,22 @@ The help menu is generated dynamically from registered options.
 
 Will print after an exception is caught if `--help` has been set
 
+## 📁 Project Structure
+
+```
+mini-cli-parser/
+├── CMakeLists.txt
+├── include/
+│   └── mini_cli/
+│       ├── App.hpp
+│       └── Option.hpp
+├── examples/
+│   └── main.cpp
+├── src/
+├── progress-log.md
+└── README.md
+```
+
 ## 🧩 Design Summary
 
 - Single Responsibility
@@ -251,4 +255,4 @@ Progress and development insights are tracked in `progress-log.md`.
 
 ## 🔮 Inspiration
 
-This project is inspired by the design of the CLI11 library: (https://github.com/CLIUtils/CLI11)
+This project is inspired by the design of the CLI11 library: https://github.com/CLIUtils/CLI11

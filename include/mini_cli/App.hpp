@@ -12,7 +12,7 @@ private:
     std::unordered_map<std::string, Option*> short_options;
 
 public:
-    void add_option(const std::string& name, const std::string& short_name ,bool expects_value, const std::string& description, bool required = false) {
+    void add_option(const std::string& name, const std::string& short_name, bool expects_value, const std::string& description, bool required = false) {
         Option opt;
 
         opt.name = name;
@@ -57,9 +57,9 @@ public:
             return it->second;
         }
 
-        auto sit = short_options.find(arg);
-        if (sit != short_options.end()) {
-            return *sit->second;
+        auto short_it = short_options.find(arg);
+        if (short_it != short_options.end()) {
+            return *short_it->second;
         }
 
         throw std::runtime_error("Unknown option: " + arg);
@@ -74,7 +74,7 @@ public:
 
         std::string next = argv[i + 1];
 
-        if(next[0] == '-') {
+        if (next[0] == '-') {
             throw std::runtime_error("Invalid value for option: " + arg);
         }
 
@@ -88,15 +88,17 @@ public:
             std::string arg = argv[i];
 
             if (arg.length() > 2 && arg[0] == '-' && arg[1] != '-') {
-                for(size_t j = 1; j < arg.length(); j++) {
+                for (size_t j = 1; j < arg.length(); j++) {
                     std::string short_flag = "-" + std::string(1, arg[j]);
 
                     Option& opt = resolve_option(short_flag);
                     opt.is_set = true;
 
-                    if(opt.expects_value) {
+                    if (opt.expects_value) {
                         if (j != arg.length() - 1) {
-                            throw std::runtime_error("Option requiring value must be last in group: " + short_flag);
+                            throw std::runtime_error(
+                                "Option requiring value must be last in group: " + short_flag
+                            );
                         }
 
                         handle_value(opt, i, argc, argv, short_flag);
