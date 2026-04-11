@@ -92,17 +92,19 @@ int main(int argc, char** argv) {
 
 C++17 or later
 
-### Build
+### Build with CMake
 
 ```bash
-$ mkdir -p build
-$ g++ -std=c++17 -Iinclude main.cpp -o build/app
+$ mkdir build
+$ cd build
+$ cmake ..
+$ cmake --build .
 ```
 
 ### Usage
 
 ```bash
-$ ./build/app --name Dave -v
+$ ./app --name Dave -v
 Name: Dave
 Verbose ON
 ```

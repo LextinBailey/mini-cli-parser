@@ -69,9 +69,13 @@ Verbose ON
 - Moved `print_help()` call:
     - After parsing
     - When an exception is caught and `--help` has been set
-- Improved short flag lookup from 0(n) to 0(1)
+- Improved short flag lookup from O(n) to O(1)
     - Before was looping through each `Option`
     - This became slow when I added support for combined short flags
     - To fix this, I implemented a second hash map that maps short names directly to their corresponding `Option` objects
     - I used structured binding, which is a C++17 feature
         - There is a workaround for C++11 compability, but for the purpose of this project, I chose the cleaner, modern approach
+
+## Day 6 (Apr 11, 2026): CMake
+
+- Implemented CMake and updated `README.md` build and usage instructions
